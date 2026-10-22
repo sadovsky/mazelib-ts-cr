@@ -1,7 +1,7 @@
 # Slopfork report: mazelib (Python) → mazelib-ts-cr (TypeScript)
 
 - Source: github.com/john-science/mazelib@56cd88294a36746bbd324c2c9f7e4ab26095deb3 (mazelib 0.9.17, MIT)
-- Mode: cleanroom · Compare profile: `cr` · Date: 2026-10-22 (started 22:31:12Z, finished 23:01Z)
+- Mode: cleanroom · Compare profile: `cr` · Date: 2026-10-22 (started 22:31:12Z, finished 23:00Z)
 - Target: Node 22, TypeScript strict, ESM, zero runtime dependencies (dev: typescript, vitest, tsx)
 
 ## Parity
