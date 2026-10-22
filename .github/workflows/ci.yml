@@ -1,0 +1,41 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: mazelib-ts-cr
+      - uses: actions/checkout@v4
+        with:
+          repository: sadovsky/slopfork-mazelib-goldens
+          path: slopfork-mazelib-goldens
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install
+        working-directory: mazelib-ts-cr
+        run: npm ci
+      - name: Typecheck
+        working-directory: mazelib-ts-cr
+        run: npx tsc --noEmit
+      - name: Unit tests
+        working-directory: mazelib-ts-cr
+        run: npx vitest run
+      - name: Goldens (compare + check, profile cr)
+        working-directory: mazelib-ts-cr
+        run: |
+          set -e
+          H=.claude/skills/slopfork/scripts/diff_harness.py
+          G=../slopfork-mazelib-goldens
+          for set in rng generate entrances solve transmute tostring monte_carlo; do
+            echo "== $set"
+            python3 $H compare --batch --profile cr --cases $G/cases/$set.jsonl --expected $G/expected/$set.jsonl --cmd "npx tsx adapter/adapter.ts"
+            python3 $H check --batch --profile cr --cases $G/cases/$set.jsonl --cmd "npx tsx adapter/adapter.ts" --checker "python3 $G/checkers/invariants.py"
+          done
