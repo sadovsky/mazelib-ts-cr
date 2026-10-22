@@ -6,7 +6,7 @@ import {
   MazeGenerator,
   MazeSolver,
   MazeTransmuter,
-  prunePathFallback,
+  pruneSolutions,
   type Cell,
   type Path,
 } from "../src/index.js";
@@ -228,7 +228,7 @@ describe("pipeline preconditions", () => {
   });
 });
 
-describe("prunePathFallback", () => {
+describe("pruneSolutions", () => {
   it("erases loops and strips endpoints", () => {
     const p: Cell[] = [
       [3, 0],
@@ -240,11 +240,13 @@ describe("prunePathFallback", () => {
       [2, 1],
       [1, 6],
     ];
-    expect(prunePathFallback(p, [3, 0], [1, 6])).toEqual([
-      [3, 1],
-      [2, 1],
+    expect(pruneSolutions([p], [3, 0], [1, 6])).toEqual([
+      [
+        [3, 1],
+        [2, 1],
+      ],
     ]);
-    expect(prunePathFallback(ROUTE, [3, 0], [1, 6])).toEqual(ROUTE);
+    expect(pruneSolutions([ROUTE], [3, 0], [1, 6])).toEqual([ROUTE]);
   });
 });
 

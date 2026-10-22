@@ -7,7 +7,7 @@ import { AssertionError, IndexError } from "./errors.js";
 import type { Cell, Grid } from "./grid.js";
 import { rng, setSeed } from "./rng.js";
 import type { MazeGenerator } from "./generators/base.js";
-import type { MazeSolver, Path } from "./solvers/base.js";
+import { pruneSolutions, type MazeSolver, type Path } from "./solvers/base.js";
 import type { MazeTransmuter } from "./transmuters/base.js";
 
 /** Options for {@link Maze.tostring}. Both default to false. */
@@ -23,31 +23,6 @@ const defaultReducer: PathReducer = (path) => path.length;
 
 type Side = 0 | 1 | 2 | 3; // north, south, west, east
 const OPPOSITE: readonly Side[] = [1, 0, 3, 2];
-
-/**
- * Loop-erase a path and strip the endpoints (solvers.md "prune_solutions").
- * Used only when the solver object does not provide its own `pruneSolutions`.
- */
-export function prunePathFallback(p: readonly Cell[], start: Cell, end: Cell): Path {
-  let out: Path = p.map(([r, c]) => [r, c] as Cell);
-  if (p.length > 2) {
-    const last = new Map<string, number>();
-    p.forEach(([r, c], i) => last.set(`${r},${c}`, i));
-    out = [];
-    let i = 0;
-    while (i < p.length) {
-      const [r, c] = p[i];
-      out.push([r, c]);
-      i = (last.get(`${r},${c}`) as number) + 1;
-    }
-  }
-  if (out.length > 1) {
-    if (out[0][0] === start[0] && out[0][1] === start[1]) out.shift();
-    const z = out[out.length - 1];
-    if (out.length > 0 && z[0] === end[0] && z[1] === end[1]) out.pop();
-  }
-  return out;
-}
 
 interface McRecord {
   grid: Grid;
@@ -137,14 +112,8 @@ export class Maze {
       }
     }
     let sols = this.solver.solve(this.grid, this.start, this.end);
-    if (this.prune) sols = this.pruneWith(this.solver, sols, this.start, this.end);
+    if (this.prune) sols = pruneSolutions(sols, this.start, this.end);
     this.solutions = sols;
-  }
-
-  private pruneWith(solver: MazeSolver, sols: Path[], start: Cell, end: Cell): Path[] {
-    const own = (solver as unknown as { pruneSolutions?: (s: Path[]) => Path[] }).pruneSolutions;
-    if (typeof own === "function") return own.call(solver, sols);
-    return sols.map((p) => prunePathFallback(p, start, end));
   }
 
   /** Text rendering; see maze.md Behavior 22-28. */

@@ -45,12 +45,12 @@ describe("CuldeSacFiller", () => {
     expect(g.toStrings()).toEqual(PRIMS3);
   });
   it("fills a loop hanging off one junction", () => {
-    // Corridor from (1,1) to (1,3) junction, with a ring (1,3)-(1,5)-(3,5)-(3,3)-(1,3).
-    const rows = ["#########", "#.......#", "#.###.#.#", "#.#.....#", "#.#######", "#.......#", "#########"];
+    // Ring (1,5)-(1,7)-(3,7)-(3,5)-(1,5) touches the rest only at junction (1,5).
+    const rows = ["#########", "#.......#", "#.###.#.#", "#.#.#...#", "#.#######", "#.......#", "#########"];
     const g = Grid.fromStrings(rows);
     new CuldeSacFiller().transmute(g, [5, 0], [5, 8]);
     expect(openCount(g)).toBeLessThan(openCount(Grid.fromStrings(rows)));
-    expect(g.get(5, 1)).toBe(0);
+    expect(g.get(1, 7)).toBe(1);
   });
 });
 
