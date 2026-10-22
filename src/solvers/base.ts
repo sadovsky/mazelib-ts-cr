@@ -51,7 +51,7 @@ function checkCell(grid: Grid, p: Cell | null | undefined, what: string): void {
   }
   const [r, c] = p;
   if (!Number.isInteger(r) || !Number.isInteger(c) || r < 0 || r >= grid.rows || c < 0 || c >= grid.cols) {
-    throw new AssertionError(`${what} position (${r}, ${c}) is outside the grid`);
+    throw new AssertionError(`solve(): ${what} (${r}, ${c}) lies beyond the ${grid.rows}x${grid.cols} grid`);
   }
 }
 

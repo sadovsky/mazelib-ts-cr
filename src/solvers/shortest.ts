@@ -56,7 +56,7 @@ export class ShortestPaths extends MazeSolver {
     this.validate(grid, start, end);
     assertStartHasExit(grid, start, end);
     const walks = shortestWalks(grid, idx(grid, start), idx(grid, end), MAX_SHORTEST_PATHS);
-    if (walks.length === 0) throw new AssertionError("no solution found");
+    if (walks.length === 0) throw new AssertionError("ShortestPaths: end is unreachable from start");
     return walks.map((w) => inner(grid, w));
   }
 }
