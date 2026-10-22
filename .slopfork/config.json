@@ -4,7 +4,7 @@
     "repo_url": "https://github.com/john-science/mazelib",
     "revision": "56cd88294a36746bbd324c2c9f7e4ab26095deb3",
     "license": "MIT",
-    "runnable": null
+    "runnable": false
   },
   "target": {
     "language": "typescript",
@@ -12,7 +12,7 @@
     "src": "src"
   },
   "mode": "cleanroom",
-  "phase": "intake",
+  "phase": "inventory",
   "sealed_paths": [
     "../mazelib-source",
     "../mazelib",
