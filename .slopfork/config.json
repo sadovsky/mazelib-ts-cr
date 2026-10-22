@@ -12,7 +12,7 @@
     "src": "src"
   },
   "mode": "cleanroom",
-  "phase": "build",
+  "phase": "audit",
   "sealed_paths": [
     "../mazelib-source",
     "../mazelib",
