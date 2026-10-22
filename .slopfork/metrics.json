@@ -1,0 +1,26 @@
+{
+  "started_at": "2026-10-22T22:31:12Z",
+  "finished_at": "2026-10-22T23:01:00Z",
+  "src_loc": 2601,
+  "adapter_loc": 241,
+  "test_loc": 897,
+  "loc_method": "non-blank lines of *.ts (src/, adapter/, test/)",
+  "spec_questions": 2,
+  "guard_denials": 4,
+  "guard_denials_note": "all 4 were path-matching false positives (`..`, `//`, `/` tokens); 38 allowed spec-writer touches",
+  "cases_exact": 168,
+  "cases_invariant": 2228,
+  "cases_total": 2396,
+  "cases_passing": 2396,
+  "deviations": [
+    "Ellers: no int8 OverflowError on KNOWN_BUGS inputs (e.g. 12x17 xskew=0.9); returns a valid perfect maze",
+    "Collision: no TypeError on mazes with loops/rooms (KNOWN_BUGS); returns valid shortest paths",
+    "ShortestPath: always returns a shortest path when one exists (original sometimes returns none)",
+    "ShortestPaths: returns equal-length shortest paths only, capped at 32",
+    "RNG consumption by algorithms is the port's own design: same seed yields different (valid) mazes than the original",
+    "HuntAndKill/DungeonRooms: random hunt falls back to a full scan so every cell is always visited",
+    "DungeonRooms: rooms touching the outer frame are skipped (Q2)",
+    "NumPy-stream randint helper added (Q1)",
+    "Grid stored as Uint8Array instead of NumPy int8"
+  ]
+}
